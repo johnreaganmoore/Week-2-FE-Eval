@@ -9,12 +9,21 @@
       width: 200px;
       float: left;
       padding: 1px 20px;
+      text-align: center;
     }
     #library .book h3 {
       font-style: italic;
     }
     #library .book h5 {
       font-weight: normal;
+    }
+    #add-book {
+      float:left;
+      text-align: center;
+    }
+    form {
+      float:left
+      text-align:center;
     }
   </style>
 </head>
@@ -23,17 +32,73 @@
 <h1>THE LIBRARY</h1>
 
 
-<div id="library"></div>
+<div id="library">
+  
+</div>
+
+<div id="add-book">
+  <h3>Add a Book</h3>
+  <label>Title</label>
+  <input id="title" type="text">
+  
+  <label>Author</label>
+  <input id="author" type="text">
+  
+  <label>Set Status</label>
+  <input type="checkbox" id="available" value="Available" required>Available :)<br>
+ 
+
+  <button id="add">Add Book</button>
+</div>
 
 <div id="templates">
-
+  <script class="book" type="text/template">
+    <div class="book">
+      <h3>Book Title: <%= title %></h3>
+      <h5>Book Author: <%= author %></h5>
+      <p>Book Status: <%= status %></p>
+    </div>
+  </script>
 </div>
+
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
 <script type="text/javascript">
-  // TODO
+  var books = [{
+    title: 'Harry Potter',
+    author: 'J.K. Rowling',
+    status: 'available'
+  },    //this object is books[0].  Attributes accessed by books[#].attr 
+  {
+    title: 'The Marvelous Story of Henry Sugar',
+    author: 'Roald Dahl',
+    status: 'available'
+  },
+  {
+    title: 'The Bible',
+    author: 'God',
+    status: 'available'
+  }
+  ];
+
+  var bookTemplateHtml = $('#templates .book').html();
+  var bookTemplate=_.template(bookTemplateHtml)
+
+  for (var i = 0; i < books.length; i += 1) {
+    
+    var newBook = bookTemplate(books[i])
+
+    $('#library').append(newBook);
+  };
+
+$('#add').on('click', function() {
+  var bookToAdd = bookTemplate({title: $('#title').val(), author: $('#author').val(), status: $('#available').val()})
+  $('#library').append(bookToAdd);
+});
+
 </script>
+
 
 <small>It's back.</small>
 
